@@ -1,10 +1,8 @@
 class SessionController < ApplicationController
     def new
-        provider_name = params[:provider_name]
+        provider_name = params[:provider]
         if provider_name
             redirect_to "/auth/#{provider_name}"
-        else 
-            redirect_to "/auth/soundcloud"
         end
     end
 

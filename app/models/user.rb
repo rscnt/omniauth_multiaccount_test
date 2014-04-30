@@ -7,18 +7,23 @@ class User < ActiveRecord::Base
             :nickname => omniauth_hash['info']['nickname'],
             :email    => omniauth_hash['info']['email']
         }
-        user = User.create(user_params)
         credential_params = {
             :uid      => omniauth_hash['uid'],
             :provider => omniauth_hash['provider'],
             :token    => omniauth_hash['credentials']['token'],
             :expire   => true,
-            :user_id  => user.id
+            :user_id  => nil
         }
-        credential = Credential.create(credential_params)
-        if credential
-            return user
-        # raise Exception
-        end
+        credential = Credential.where(:provider => credential_params[:provider], :uid => credential_params[:uid])
+        # dummy but its done 
+        user = nil
+        if credential 
+            user = User.find(credential.user.id)
+        else
+            user       = User.create(user_params)
+            credential_params[:user_id] = user.id
+            credential = Credential.create(credential_params)
+       end
+        return user
     end
 end
