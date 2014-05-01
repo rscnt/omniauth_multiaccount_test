@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
     has_many :credential
-    
+
     def self.create_with_omniauth(omniauth_hash)
         user_params = {
             :name     => omniauth_hash['info']['name'],
@@ -15,15 +15,15 @@ class User < ActiveRecord::Base
             :user_id  => nil
         }
         credential = Credential.where(:provider => credential_params[:provider], :uid => credential_params[:uid])
-        # dummy but its done 
+        # dummy but its done
         user = nil
-        if credential 
-            user = User.find(credential.user.id)
+        if credential.user
+            user = User.find(credential.user_id)
         else
             user       = User.create(user_params)
             credential_params[:user_id] = user.id
             credential = Credential.create(credential_params)
-       end
+        end
         return user
     end
 end
