@@ -14,17 +14,18 @@ class User < ActiveRecord::Base
             :expire   => true,
             :user_id  => nil
         }
-        credential = Credential.where(:provider => credential_params[:provider],
-                                      :uid      => credential_params[:uid])
-        # dummy but its done
-        user = nil
-        if credential.nil?
-            user = User.find(credential.user_id)
+        credential = Credential.find_by(provider: credential_params[:provider],
+                                        uid: credential_params[:uid])
+        if !!credential
+          if credential.user_id.nil?
+            user = User.create(name: user_params[:name], nickname:
+                               omniauth_hash[:nickname], email:
+                               omniauth_hash[:email])
+            credential.user_id = user.id
+            credential.save
+            user
+          end
         else
-            user                        = User.create(user_params)
-            credential_params[:user_id] = user.id
-            credential                  = Credential.create(credential_params)
         end
-        return user
     end
 end

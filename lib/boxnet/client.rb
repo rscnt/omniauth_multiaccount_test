@@ -184,13 +184,15 @@ module BoxNet
         def construct_query_arguments(path_or_uri, options={}, body_or_query=:query)
             uri = URI.parse(path_or_uri)
             path = uri.path
-            scheme = use_ssl? ? 'https' : 'http'
+            scheme = :use_ssl? ? 'https' : 'http'
             if access_token
                 options[:headers] = {"Authorization" => "Bearer #{access_token}"}
                 # options[body_or_query][:oauth_token] = access_token
             end
             options[body_or_query] ||= {}
-            options[body_or_query][:format] = "json"
+            puts options.inspect
+            puts options[body_or_query].inspect
+            options[:format] = "json"
             if access_token
                 # options[body_or_query][:oauth_token] = access_token
             else

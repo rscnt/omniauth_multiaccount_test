@@ -35,9 +35,9 @@ module BoxNet
 
     def message
       error = response.parsed_response['error'] || response.parsed_response['errors']['error']
-      "HTTP status: #{response.code} #{STATUS_CODES[response.code]} Error: #{error}"
+      "HTTP status: #{response.code} #{STATUS_CODES[response.code]} Error: #{error}, Body: #{response.body}"
     rescue
-      "HTTP status: #{response.code} #{STATUS_CODES[response.code]}"
+      "HTTP status: #{response.code} #{STATUS_CODES[response.code]}, Body: #{response.body}"
     end
 
   end
