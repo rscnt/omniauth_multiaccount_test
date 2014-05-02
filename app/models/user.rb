@@ -14,15 +14,16 @@ class User < ActiveRecord::Base
             :expire   => true,
             :user_id  => nil
         }
-        credential = Credential.where(:provider => credential_params[:provider], :uid => credential_params[:uid])
+        credential = Credential.where(:provider => credential_params[:provider],
+                                      :uid      => credential_params[:uid])
         # dummy but its done
         user = nil
-        if credential.user
+        if credential.nil?
             user = User.find(credential.user_id)
         else
-            user       = User.create(user_params)
+            user                        = User.create(user_params)
             credential_params[:user_id] = user.id
-            credential = Credential.create(credential_params)
+            credential                  = Credential.create(credential_params)
         end
         return user
     end
