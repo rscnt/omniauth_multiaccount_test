@@ -6,6 +6,7 @@ class CreateCredentials < ActiveRecord::Migration
       t.string      :uid
       t.string      :provider
       t.string      :token
+      t.string      :refresh_token
       t.boolean     :expire
       t.belongs_to  :user
     end

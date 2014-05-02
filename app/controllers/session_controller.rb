@@ -12,6 +12,7 @@ class SessionController < ApplicationController
 
     def create
         auth = request.env['omniauth.auth']
+        puts "Omniauth hahs #{auth.inspect}"
         @credential = Credential.find_with_omniauth(auth)
 
         if @credential.nil?
@@ -45,11 +46,13 @@ class SessionController < ApplicationController
           client = SoundCloud.new(:access_token => @credential.token)
           puts client.get('/me')
         else
+          puts "Credential Token : #{@credential.inspect}"
           client = BoxNet.new(:access_token => @credential.token, :use_ssl => true)
           begin
-            respns = client.post('/folders', {:name => 'ndurnz_2', :parent => {:id => '0'}}.to_json)
-          rescue
-            client.exchange_token{client_id: OMNIAUTH_CONFIG['box_client_id'], client_secret: OMNIAUTH_CONFIG['box_client_secret']}
+          respns = client.post('/folders', {:name => 'ndurnz_2', :parent => {:id => '0'}}.to_json)
+          rescue BoxNet::ResponseError => e
+            puts e.message
+            puts e.inspect
           end
           puts  respns
           puts client.get('/users/me')

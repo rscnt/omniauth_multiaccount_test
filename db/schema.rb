@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20140430202434) do
     t.string   "uid"
     t.string   "provider"
     t.string   "token"
+    t.string   "refresh_token"
     t.boolean  "expire"
     t.integer  "user_id"
   end

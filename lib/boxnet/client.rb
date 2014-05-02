@@ -54,11 +54,11 @@ module BoxNet
 
         # accessors for options
         def client_id
-            @options[:client_id]
+            @options[:client_id] = OMNIAUTH_CONFIG['box_client_id']
         end
 
         def client_secret
-            @options[:client_secret]
+            @options[:client_secret] = OMNIAUTH_CONFIG['box_client_secret']
         end
 
         def access_token
