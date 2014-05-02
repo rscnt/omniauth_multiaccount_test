@@ -18,7 +18,8 @@ class User < ActiveRecord::Base
         # dummy but its done 
         user = nil
         if credential 
-            user = User.find(credential.user.id)
+            puts credential
+            user = credential.user
         else
             user       = User.create(user_params)
             credential_params[:user_id] = user.id

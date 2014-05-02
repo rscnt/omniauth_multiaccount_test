@@ -2,4 +2,6 @@
 <p>Find me in app/views/home/index.html.erb</p>
 <p><%= link_to 'Sign in with Soundcloud', "#{signin_path}?provider=soundcloud" %></p>
 <p><%= link_to 'Sign in with Box.net', "#{signin_path}?provider=box_oauth2" %></p>
+<p>Logged as :  <%= session[:token] || "" %></p>
+
 
