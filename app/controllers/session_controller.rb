@@ -1,5 +1,5 @@
 require 'soundcloud'
-require 'boxnet'
+require 'box'
 require 'json'
 
 class SessionController < ApplicationController
@@ -22,7 +22,7 @@ class SessionController < ApplicationController
         if signed_in?
           if @credential.user == current_user
             # user signed in trying to link with other account
-            redirect_to root_url, notice: "Already logged in"
+            redirect_to root_url, notice: "Already logged in with #{@credential.provider} "
           else
             # the credential is not associated with the current_user so lets
             # associate the indentity
@@ -42,21 +42,41 @@ class SessionController < ApplicationController
           end
         end
 
-        if @credential.provider == "soundcloud"
-          client = SoundCloud.new(:access_token => @credential.token)
-          puts client.get('/me')
-        else
-          puts "Credential Token : #{@credential.inspect}"
-          client = BoxNet.new(:access_token => @credential.token, :use_ssl => true)
-          begin
-          respns = client.post('/folders', {:name => 'ndurnz_2', :parent => {:id => '0'}}.to_json)
-          rescue BoxNet::ResponseError => e
-            puts e.message
-            puts e.inspect
-          end
-          puts  respns
-          puts client.get('/users/me')
-
+        case @credential.provider
+          when "soundcloud"
+            client = SoundCloud.new(:access_token => @credential.token)
+            puts client.get('/me/tracks')
+          when "box_oauth2"
+            client = Box.new(:access_token => @credential.token, :use_ssl => true)
+            begin
+              respns = client.post('/folders', {:name => 'ndurnz12123123', :parent => {:id => '0'}}.to_json)
+            rescue Box::ResponseError => e
+              puts e.message
+              puts e.inspect
+            end
+            puts  respns
+            puts client.get('/users/me')
+          when "dropbox_oauth2"
+            client = Box.new(:site => 'dropbox.com', :access_token => @credential.token, :use_ssl => true)
+            begin
+              parent_dir = '/1/metadata/sandbox'
+              mresponse = client.get(parent_dir, {:list => true})
+              json_dropbox = JSON.parse(mresponse.body)
+              contents = json_dropbox['contents']
+              audio_mime_type = "audio/mpeg"
+              contents.each do |content|
+                if content['is_dir'] == true
+                  iresponse = client.get("#{parent_dir}#{content['path']}", :list => true)
+                  puts iresponse
+                end
+                if content['mime_type'] == audio_mime_type
+                  puts content['path']
+                end
+              end
+            rescue Box::ResponseError => e
+              puts e.inspect
+              puts e.message
+            end
         end
     end
 

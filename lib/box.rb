@@ -2,13 +2,13 @@ require 'hashie'
 require 'httmultiparty'
 require 'uri'
 
-require 'boxnet/array_response_wrapper'
-require 'boxnet/client'
-require 'boxnet/hash_response_wrapper'
-require 'boxnet/response_error'
-require 'boxnet/version'
+require 'box/array_response_wrapper'
+require 'box/client'
+require 'box/hash_response_wrapper'
+require 'box/response_error'
+require 'box/version'
 
-module BoxNet
+module Box
 
   def new(options={})
     Client.new(options)
@@ -28,4 +28,4 @@ module BoxNet
 
 end
 
-BoxNet = BoxNet
+Box = Box

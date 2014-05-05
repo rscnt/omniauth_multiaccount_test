@@ -1,4 +1,4 @@
-module BoxNet
+module Box
     class Client
         include HTTMultiParty
         USER_AGENT            = "Box.Net Ruby Wrapper #{VERSION}"
@@ -95,7 +95,8 @@ module BoxNet
         alias host site
 
         def api_host
-            [API_SUBHOST, host].join('.')
+            api_subhost = @options[:api_host] || API_SUBHOST
+            [api_subhost, host].join('.')
         end
 
         def authorize_url(options={})

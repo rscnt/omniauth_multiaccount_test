@@ -1,8 +1,16 @@
+require 'box'
+
 class Credential < ActiveRecord::Base
   belongs_to :user
 
   def self.find_with_omniauth(omniauth_hash)
-    find_by provider: omniauth_hash['provider'], uid: omniauth_hash['uid']
+    credential = find_by provider: omniauth_hash['provider'], uid: omniauth_hash['uid']
+    if !!credential
+      if omniauth_hash['credentials']['token'] !=  credential.token
+        credential.token = omniauth_hash['credentials']['token']
+      end
+    end
+    return credential
   end
 
 

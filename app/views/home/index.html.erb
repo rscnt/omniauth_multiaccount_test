@@ -2,6 +2,18 @@
 <p>Find me in app/views/home/index.html.erb</p>
 <p><%= link_to 'Sign in with Soundcloud', "#{signin_path}?provider=soundcloud" %></p>
 <p><%= link_to 'Sign in with Box.net', "#{signin_path}?provider=box_oauth2" %></p>
+<p><%= link_to 'Sign in with Dropbox', "#{signin_path}?provider=dropbox_oauth2" %></p>
 <% flash.each do |name, msg| -%>
       <%= content_tag :div, msg, class: name %>
 <% end -%>
+
+<% if @current_user %>
+<select>
+  <% for credential in @current_user.credential %>
+    <option value="<%=@credential.provider %>">
+      <%=@credential.provider %>
+    </option>
+  <% end %>
+</select>
+<% end %>
+

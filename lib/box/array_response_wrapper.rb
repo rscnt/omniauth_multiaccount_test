@@ -1,4 +1,4 @@
-module BoxNet
+module Box
   class ArrayResponseWrapper < Array
     attr_reader :response
     def initialize(response=[])

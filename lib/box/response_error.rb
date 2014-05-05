@@ -1,4 +1,4 @@
-module BoxNet
+module Box
   class ResponseError < HTTParty::ResponseError
     STATUS_CODES = {
       400 => "Bad Request",
