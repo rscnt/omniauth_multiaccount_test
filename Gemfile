@@ -42,6 +42,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'omniauth', '~> 1.2.1'
 gem 'omniauth-soundcloud', '~> 1.0.0'
 gem 'omniauth-box-oauth2', :git => 'https://github.com/rscnt/omniauth-box-oauth2.git', :branch => 'master'
+gem 'omniauth-dropbox-oauth2'
 # a module to make request easily
 gem 'httparty'
 # extension for httparty to make uplaods
