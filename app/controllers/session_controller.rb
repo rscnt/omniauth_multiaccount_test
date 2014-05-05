@@ -49,10 +49,13 @@ class SessionController < ApplicationController
           when "box_oauth2"
             client = Box.new(:access_token => @credential.token, :use_ssl => true)
             begin
-              respns = client.post('/folders', {:name => 'ndurnz12123123', :parent => {:id => '0'}}.to_json)
+              respns = client.post('/folders', {:name => 'ndurnz', :parent => {:id => '0'}}.to_json)
+              puts "normal response #{respns.inspect}"
             rescue Box::ResponseError => e
-              puts e.message
-              puts e.inspect
+              puts "response on error #{e.response.inspect}"
+              if e.response.code == 409
+                puts e.response.body
+              end
             end
             puts  respns
             puts client.get('/users/me')

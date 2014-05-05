@@ -33,6 +33,9 @@ module Box
       510 => "Not Extended"
     }
 
+    def error_response
+      response
+    end
     def message
       error = response.parsed_response['error'] || response.parsed_response['errors']['error']
       "HTTP status: #{response.code} #{STATUS_CODES[response.code]} Error: #{error}, Body: #{response.body}"
